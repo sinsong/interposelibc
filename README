@@ -1,0 +1,18 @@
+Build
+
+$ make
+
+Usage
+
+use ld-linux.so environment variable LD_PRELOAD
+$ LD_PRELOAD=interposelibc.so <executable>
+
+conf - 配置文件相关函数
+include - include dir
+interpose - 替换的函数
+obj - 目标输出目录
+test - 测试程序
+
+misc
+unistd.h - cp /usr/include/unistd.h . - 拷一份看看而已
+include/unistd-ref.h - 清理过的 unistd.h
