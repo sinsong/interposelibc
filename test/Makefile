@@ -5,5 +5,5 @@ readconf: readconf.o
 
 .PHONY: clean
 clean:
-	rm test
-	rm readconf
+	rm -f test
+	rm -f readconf

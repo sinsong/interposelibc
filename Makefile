@@ -1,20 +1,21 @@
-CFLAGS = -I$(realpath include) -fPIC
-OUTDIR = $(realpath obj)
+export CFLAGS = -I$(realpath include) -fPIC
+export OUTDIR = $(realpath .)/obj
+# 没有 obj 目录的话，$(realpath obj) 未空
+
+.PHONY: all
+all: interposelibc.so
 
 interposelibc.so: interpose conf
 	$(CC) -shared -fPIC -ldl -o $(OUTDIR)/$@ `find obj -name *.o`
 
 .PHONY: interpose
 interpose:
-	$(MAKE) OUTDIR="$(OUTDIR)" \
-			CFLAGS="$(CFLAGS)" \
-	-C interpose
+	if [ ! -d obj ]; then mkdir obj; fi
+	$(MAKE) -C interpose
 
 .PHONY: conf
 conf:
-	$(MAKE) OUTDIR="$(OUTDIR)" \
-			CFLAGS="$(CFLAGS)" \
-	-C conf
+	$(MAKE) -C conf
 
 .PHONY: test
 TEST=test
@@ -26,6 +27,7 @@ test:
 
 .PHONY: clean
 clean:
-	rm obj/interposelibc.so
-	find . -name *.o | xargs rm
+	# rm obj/interposelibc.so
+	# find . -name *.o | xargs rm
+	rm -rf obj
 	$(MAKE) -C test clean
